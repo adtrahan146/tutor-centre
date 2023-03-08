@@ -17,4 +17,4 @@ This project aims to streamline and improve the CSCI tutoring process by impleme
     Node.js, Express
     MySQL
     Bootstrap, jQuery
-    Heroku
+ 
