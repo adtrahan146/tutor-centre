@@ -13,6 +13,9 @@ const Homescreen = ({ navigation }) => {
             <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
                 <Text style={styles.buttonText}>GET /test/</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Student")}>
+                <Text style={styles.buttonText}>Go to StudentView Temp </Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Tutor")}>
                 <Text style={styles.buttonText}>Go to TutorView Temp Btn</Text>
             </TouchableOpacity>
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     spacing: {
-        height: 10,
+        height: 50,
     },
     button: {
         backgroundColor: "#007AFF",
