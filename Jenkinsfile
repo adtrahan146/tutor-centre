@@ -1,12 +1,12 @@
 pipeline {
-  agent any
+    agent {
+        docker { image 'node:lts' }
+    }
 
-  environment {
-    FRONTEND_IMAGE = 'xela146/tutor-front:latest'
-    BACKEND_IMAGE = 'xela146/tutor-back:latest'
-    DOCKER_HOME = tool 'default docker'
-    PATH = "${env.DOCKER_HOME}:${env.PATH}"
-  }
+    environment {
+        FRONTEND_IMAGE = 'xela146/tutor-front:latest'
+        BACKEND_IMAGE = 'xela146/tutor-back:latest'
+    }
 
   stages {
     stage('Build Frontend') {
