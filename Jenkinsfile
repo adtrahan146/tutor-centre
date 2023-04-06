@@ -4,6 +4,8 @@ pipeline {
   environment {
     FRONTEND_IMAGE = 'xela146/tutor-front:latest'
     BACKEND_IMAGE = 'xela146/tutor-back:latest'
+    DOCKER_HOME = tool 'default docker'
+    PATH = "${env.DOCKER_HOME}:${env.PATH}"
   }
 
   stages {
