@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-            docker {
-                image 'node:lts'
-                reuseNode true
-            }
-        }
+    
     environment {
         FRONTEND_IMAGE = 'xela146/tutor-front:latest'
         BACKEND_IMAGE = 'xela146/tutor-back:latest'
@@ -14,35 +9,31 @@ pipeline {
     stage('Build Frontend') {
 
       steps {
-        dir('frontend') {
           sh 'docker build -t $FRONTEND_IMAGE .'
-        }
       }
     }
 
-    stage('Build Backend') {
-      steps {
-        dir('backend') {
-          sh 'docker build -t $BACKEND_IMAGE .'
-        }
-      }
-    }
+    // stage('Build Backend') {
+    //   steps {
+    //     dir('backend') {
+    //       sh 'docker build -t $BACKEND_IMAGE .'
+    //     }
+    //   }
+    // }
 
     stage('Test Frontend') {
       steps {
-        dir('frontend') {
           sh 'docker run $FRONTEND_IMAGE npx expo test'
         }
-      }
     }
 
-    stage('Test Backend') {
-      steps {
-        dir('backend') {
-          sh 'docker run $BACKEND_IMAGE npm test'
-        }
-      }
-    }
+    // stage('Test Backend') {
+    //   steps {
+    //     dir('backend') {
+    //       sh 'docker run $BACKEND_IMAGE npm test'
+    //     }
+    //   }
+    // }
 
     // stage('Run Frontend') {
     //   steps {
@@ -73,18 +64,18 @@ pipeline {
       }
     }
 
-    stage('Push Backend Image') {
-      when {
-        branch 'main'
-      }
-      steps {
-        script {
-          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-            sh "docker push $BACKEND_IMAGE"
-          }
-        }
-      }
-    }
+    // stage('Push Backend Image') {
+    //   when {
+    //     branch 'main'
+    //   }
+    //   steps {
+    //     script {
+    //       docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+    //         sh "docker push $BACKEND_IMAGE"
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('Deploy') {
       when {
