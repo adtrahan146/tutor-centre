@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'node:lts' }
-    }
+    agent any
 
     environment {
         FRONTEND_IMAGE = 'xela146/tutor-front:latest'
@@ -10,6 +8,15 @@ pipeline {
 
   stages {
     stage('Build Frontend') {
+        agent {
+                docker {
+                    image 'node:lts'
+                    // Run the container on the node specified at the
+                    // top-level of the Pipeline, in the same workspace,
+                    // rather than on a new node entirely:
+                    reuseNode true
+                }
+            }
       steps {
         dir('frontend') {
           sh 'docker build -t $FRONTEND_IMAGE .'
