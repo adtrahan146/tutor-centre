@@ -1,29 +1,23 @@
-import React from 'react';
-import {View, Text, StyleSheet,TouchableOpacity, Image} from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-
-const StudentView = ({ navigation }) =>
-{
-    
-
+const StudentView = ({ navigation }) => {
     return (
         <View>
             <Text style={styles.header}>UNO JAVA HELP DESK</Text>
 
-            <View style={styles.container}> 
-
+            <View style={styles.container}>
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("JoinTheQueue")}>
-                <Text style = {styles.nextPage}>Join the Queue for Help</Text> 
+                    <Text style={styles.nextPage}>Join the Queue for Help</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("ScheduleAppointment")}>
-                <Text style = {styles.nextPage}>Schedule a Tutoring Appointment</Text> 
+                    <Text style={styles.nextPage}>Schedule a Tutoring Appointment</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("AboutTutors")}>
-                <Text style = {styles.nextPage}>About the Tutors</Text> 
+                    <Text style={styles.nextPage}>About the Tutors</Text>
                 </TouchableOpacity>
-
             </View>
 
             <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
@@ -31,8 +25,7 @@ const StudentView = ({ navigation }) =>
     );
 };
 
-const styles = StyleSheet.create
-({
+const styles = StyleSheet.create({
     header: {
         fontSize: 52,
         fontWeight: "bold",
@@ -45,45 +38,42 @@ const styles = StyleSheet.create
         alignItems: "center",
         backgroundColor: "#F5FCFF",
     },
-    
-    buttonContainer:{
+
+    buttonContainer: {
         backgroundColor: "#005CA6",
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
         marginBottom: 10,
-      },
-      aboutImg:{
+    },
+    aboutImg: {
         width: 30,
-        height: 30
-      },
-      aboutContainer:{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 120
-        
-      },
-      aboutText:{
-        fontSize: 20
-      },
-    
-    nextPage:{
+        height: 30,
+    },
+    aboutContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 120,
+    },
+    aboutText: {
+        fontSize: 20,
+    },
+
+    nextPage: {
         color: "#FFFFFF",
         fontSize: 16,
     },
 
-    footing:{
-      textAlign: 'center',
-      marginTop: 30,
-      backgroundColor: "#F5FCFF",
+    footing: {
+        textAlign: "center",
+        marginTop: 30,
+        backgroundColor: "#F5FCFF",
     },
 
-    background:{
-      backgroundColor: "white"
-    }
-
+    background: {
+        backgroundColor: "white",
+    },
 });
-
 
 export default StudentView;
