@@ -1,5 +1,5 @@
 pipeline {
-    
+    agent any
     environment {
         FRONTEND_IMAGE = 'xela146/tutor-front:latest'
         BACKEND_IMAGE = 'xela146/tutor-back:latest'
