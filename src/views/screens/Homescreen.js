@@ -1,9 +1,15 @@
 import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
+//to move later on:
+import { serverAPI } from "../../models/axios";
+
 const Homescreen = ({ navigation }) => {
-    const handleButtonPress = () => {
-        console.log("GET /test/ button pressed");
+    const handleButtonPress = async () => {
+        let res = await serverAPI.get("/test/");
+        if (res.data) {
+            console.log(res.data);
+        }
     };
 
     return (
