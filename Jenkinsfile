@@ -14,16 +14,14 @@ pipeline {
       }
     }
 
-    stage('Run Server for Tests') {
-
-      steps {
-          sh 'docker run -t $BACKEND_IMAGE'
-      }
-    }
-
-    stage('Test Frontend') {
-      steps {
-          sh 'docker run $FRONTEND_IMAGE npm test'
+    stage('Run Tests with Server active') {
+        steps {
+            script {
+            sh 'docker run -d --name $BACKEND_IMAGE -p 3000:3000 $BACKEND_IMAGE'
+            sh 'docker run $FRONTEND_IMAGE npm test'
+            sh 'docker stop $BACKEND_IMAGE'
+            sh 'docker rm $BACKEND_IMAGE'
+            }
         }
     }
 
