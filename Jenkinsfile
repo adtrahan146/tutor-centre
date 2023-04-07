@@ -17,10 +17,10 @@ pipeline {
     stage('Run Tests with Server active') {
         steps {
             script {
-            sh 'docker run -d --name $BACKEND_IMAGE -p 3000:3000'
+            sh 'docker run -d --name backend-test -p 3000:3000 $BACKEND_IMAGE'
             sh 'docker run $FRONTEND_IMAGE npm test'
-            sh 'docker stop $BACKEND_IMAGE'
-            sh 'docker rm $BACKEND_IMAGE'
+            sh 'docker stop backend-test'
+            sh 'docker rm backend-test'
             }
         }
     }
