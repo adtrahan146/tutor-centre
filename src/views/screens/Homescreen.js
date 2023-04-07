@@ -1,22 +1,13 @@
 import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-
-//to move later on:
-import { serverAPI } from "../../models/axios";
+import { handleButtonPressTest } from "../../models/axios";
 
 const Homescreen = ({ navigation }) => {
-    const handleButtonPress = async () => {
-        let res = await serverAPI.get("/test/");
-        if (res.data) {
-            console.log(res.data);
-        }
-    };
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Hello World</Text>
             <View style={styles.spacing} />
-            <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+            <TouchableOpacity style={styles.button} onPress={handleButtonPressTest}>
                 <Text style={styles.buttonText}>GET /test/</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Student")}>

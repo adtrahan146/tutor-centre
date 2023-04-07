@@ -14,9 +14,16 @@ pipeline {
       }
     }
 
+    stage('Run Server for Tests') {
+
+      steps {
+          sh 'docker run -t $BACKEND_IMAGE'
+      }
+    }
+
     stage('Test Frontend') {
       steps {
-          sh 'docker run $FRONTEND_IMAGE npx expo test'
+          sh 'docker run $FRONTEND_IMAGE npm test'
         }
     }
 
