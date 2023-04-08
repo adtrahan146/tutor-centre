@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react-native";
 import Homescreen from "../views/screens/Homescreen";
-import { handleButtonPressTest } from "../models/axios";
+import serverAPI from "../models/ServerAPI";
 
 // Mock the axios module
 // jest.mock("../models/axios", () => ({
@@ -30,7 +30,7 @@ describe("Homescreen", () => {
 
         // Add an expect statement to ensure handleButtonPressTest is called
         // and returns the expected response
-        const response = await handleButtonPressTest();
+        const response = await serverAPI.handleButtonPressTest();
         expect(response.data).toEqual("hello world!");
 
         fireEvent.press(tutorViewButton);
