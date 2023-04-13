@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 const StudentView = ({ navigation }) => {
     return (
-        <View>
-            <Text style={styles.header}>UNO JAVA HELP DESK</Text>
+        <View style={styles.background}>
+            <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <View style={styles.container}>
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("JoinTheQueue")}>
@@ -18,9 +18,10 @@ const StudentView = ({ navigation }) => {
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("AboutTutors")}>
                     <Text style={styles.nextPage}>About the Tutors</Text>
                 </TouchableOpacity>
+                <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
             </View>
 
-            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
+            
         </View>
     );
 };
@@ -29,14 +30,15 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 52,
         fontWeight: "bold",
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
         textAlign: "center",
+        color: "#293C7D",
     },
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
     },
 
     buttonContainer: {
@@ -67,12 +69,15 @@ const styles = StyleSheet.create({
 
     footing: {
         textAlign: "center",
-        marginTop: 30,
-        backgroundColor: "#F5FCFF",
+        marginTop: 50,
+        //position: 'absolute',
+        bottom: 0,
+        //backgroundColor: "#F5FCFF",
     },
 
     background: {
-        backgroundColor: "white",
+        backgroundColor: "#F5FCFF",
+
     },
 });
 
