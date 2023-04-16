@@ -10,7 +10,7 @@ class ServerAPI {
     }
 
     async handleButtonPressTest() {
-        let res = await this.api.get("/test/");
+        let res = await this.api.get("student/test/");
         if (res.data) {
             console.log(res.data);
         }
