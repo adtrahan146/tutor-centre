@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import serverAPI from "../../models/ServerAPI";
 
 const StudentView = ({ navigation }) => {
-
     const [waitTime, setWaitTime] = useState(0);
 
     useEffect(() => {
         const init = async () => {
             try {
                 let waitTimeRes = await serverAPI.getQueueWaittime();
-                console.log(waitTimeRes)
-                setWaitTime(waitTimeRes)
+                console.log(waitTimeRes + 5);
+                setWaitTime(waitTimeRes + 5);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         };
         console.log(`useEffect Init Function`);
@@ -40,8 +40,6 @@ const StudentView = ({ navigation }) => {
                 </TouchableOpacity>
                 <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
             </View>
-
-            
         </View>
     );
 };
@@ -97,7 +95,6 @@ const styles = StyleSheet.create({
 
     background: {
         backgroundColor: "#F5FCFF",
-
     },
 });
 
