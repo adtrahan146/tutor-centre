@@ -1,7 +1,24 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 const StudentView = ({ navigation }) => {
+
+    const [waitTime, setWaitTime] = useState(0);
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                let waitTimeRes = await serverAPI.getQueueWaittime();
+                console.log(waitTimeRes)
+                setWaitTime(waitTimeRes)
+            } catch (error) {
+                console.log(error)
+            }
+        };
+        console.log(`useEffect Init Function`);
+        init();
+    }, []);
+
     return (
         <View style={styles.background}>
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
@@ -10,6 +27,9 @@ const StudentView = ({ navigation }) => {
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("JoinTheQueue")}>
                     <Text style={styles.nextPage}>Join the Queue for Help</Text>
                 </TouchableOpacity>
+                <View>
+                    <Text>Estimated wait time for queue: {waitTime}</Text>
+                </View>
 
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("ScheduleAppointment")}>
                     <Text style={styles.nextPage}>Schedule a Tutoring Appointment</Text>

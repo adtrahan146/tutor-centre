@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, } from "react-native";
+import serverAPI from "../../models/ServerAPI";
 
 const JoinTheQueue = () => {
     return (
@@ -8,6 +9,10 @@ const JoinTheQueue = () => {
 
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
+
+            <TouchableOpacity style={styles.button} onPress={() => serverAPI.joinQueue()}>
+                <Text style={styles.buttonText}>Click to Join</Text>
+            </TouchableOpacity>
 
             <View style={styles.row}>
                 <View style={styles.queue}>
@@ -25,6 +30,7 @@ const JoinTheQueue = () => {
     );
 };
 
+
 const styles = StyleSheet.create({
     header: {
         fontSize: 52,
@@ -41,6 +47,12 @@ const styles = StyleSheet.create({
         height: 500,
         borderWidth: 5,
         borderColor: "black",
+    },
+    button: {
+        backgroundColor: "#007AFF",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 5,
     },
     container: {
         flex: 1,
