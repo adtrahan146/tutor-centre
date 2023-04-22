@@ -7,7 +7,7 @@ import StudentView from "./src/views/screens/StudentView";
 import JoinTheQueue from "./src/views/screens/JoinTheQueue";
 import ScheduleAppointment from "./src/views/screens/ScheduleAnAppointment";
 import AboutTutors from "./src/views/screens/AboutTutors";
-
+import TutorCalendar from "./src/views/screens/TutorCalendar";
 const switchNavigator = createSwitchNavigator(
     {
         appFlow: createStackNavigator(
@@ -17,7 +17,8 @@ const switchNavigator = createSwitchNavigator(
                 Student: StudentView,
                 JoinTheQueue: JoinTheQueue,
                 ScheduleAppointment: ScheduleAppointment,
-                AboutTutors: AboutTutors
+                AboutTutors: AboutTutors,
+                TutorCalendar: TutorCalendar,
             },
             { initialRouteName: "Home" }
         ),
