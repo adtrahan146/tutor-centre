@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import serverAPI from "../../models/ServerAPI";
 
 const StudentView = ({ navigation }) => {
+    const [waitTime, setWaitTime] = useState(0);
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                let waitTimeRes = await serverAPI.getQueueWaittime();
+                console.log(waitTimeRes + 5);
+                setWaitTime(waitTimeRes + 5);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        console.log(`useEffect Init Function`);
+        init();
+    }, []);
+
     return (
-        <View>
-            <Text style={styles.header}>UNO JAVA HELP DESK</Text>
+        <View style={styles.background}>
+            <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <View style={styles.container}>
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("JoinTheQueue")}>
                     <Text style={styles.nextPage}>Join the Queue for Help</Text>
                 </TouchableOpacity>
+                <View>
+                    <Text>Estimated wait time for queue: {waitTime}</Text>
+                </View>
 
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("ScheduleAppointment")}>
                     <Text style={styles.nextPage}>Schedule a Tutoring Appointment</Text>
@@ -18,9 +38,8 @@ const StudentView = ({ navigation }) => {
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("AboutTutors")}>
                     <Text style={styles.nextPage}>About the Tutors</Text>
                 </TouchableOpacity>
+                <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
             </View>
-
-            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
         </View>
     );
 };
@@ -29,14 +48,15 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 52,
         fontWeight: "bold",
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
         textAlign: "center",
+        color: "#293C7D",
     },
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
     },
 
     buttonContainer: {
@@ -67,12 +87,14 @@ const styles = StyleSheet.create({
 
     footing: {
         textAlign: "center",
-        marginTop: 30,
-        backgroundColor: "#F5FCFF",
+        marginTop: 50,
+        //position: 'absolute',
+        bottom: 0,
+        //backgroundColor: "#F5FCFF",
     },
 
     background: {
-        backgroundColor: "white",
+        backgroundColor: "#F5FCFF",
     },
 });
 
