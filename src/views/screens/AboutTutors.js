@@ -7,8 +7,8 @@ const AboutTutors= () =>
     
 
     return (
-        <View>
-            <Text style={styles.header}>UNO JAVA HELP DESK</Text>
+        <View style={styles.background}>
+            <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <Text>About the Tutors</Text>
             <Text>Tutor: Jared Wise is awesome</Text>
@@ -21,10 +21,11 @@ const AboutTutors= () =>
 const styles = StyleSheet.create
 ({
     header: {
-        fontSize: 52,
-        fontWeight: "bold",
-        backgroundColor: "#F5FCFF",
-        textAlign: "center",
+      fontSize: 52,
+      fontWeight: "bold",
+      //backgroundColor: "#F5FCFF",
+      textAlign: "center",
+      color: "#293C7D",
     },
     container: {
         flex: 1,
@@ -63,11 +64,11 @@ const styles = StyleSheet.create
     footing:{
       textAlign: 'center',
       marginTop: 30,
-      backgroundColor: "#F5FCFF",
+      //backgroundColor: "#F5FCFF",
     },
 
     background:{
-      backgroundColor: "white"
+      backgroundColor: "#F5FCFF",
     }
 
 });

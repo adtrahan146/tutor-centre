@@ -17,7 +17,7 @@ const switchNavigator = createSwitchNavigator(
                 Student: StudentView,
                 JoinTheQueue: JoinTheQueue,
                 ScheduleAppointment: ScheduleAppointment,
-                AboutTutors: AboutTutors
+                AboutTutors: AboutTutors,
             },
             { initialRouteName: "Home" }
         ),
@@ -26,6 +26,35 @@ const switchNavigator = createSwitchNavigator(
         initialRouteName: "appFlow",
     }
 );
+
+// const switchNavigator = createSwitchNavigator(
+//     {
+//         notSignedInFlow: createStackNavigator(
+//             {
+//                 Home: Homescreen,
+//             },
+//             { initialRouteName: "Home" }
+//         ),
+//         studentFlow: createStackNavigator(
+//             {
+//                 Student: StudentView,
+//                 JoinTheQueue: JoinTheQueue,
+//                 ScheduleAppointment: ScheduleAppointment,
+//                 AboutTutors: AboutTutors,
+//             },
+//             { initialRouteName: "Student" }
+//         ),
+//         tutorFlow: createStackNavigator(
+//             {
+//                 Tutor: TutorView,
+//             },
+//             { initialRouteName: "Tutor" }
+//         ),
+//     },
+//     {
+//         initialRouteName: "notSignedInFlow",
+//     }
+// );
 
 const App = createAppContainer(switchNavigator);
 
