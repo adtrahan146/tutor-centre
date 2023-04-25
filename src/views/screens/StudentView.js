@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import serverAPI from "../../models/ServerAPI";
+import useSocket from "../../utils/socket";
 
 const StudentView = ({ navigation }) => {
     const [waitTime, setWaitTime] = useState(0);
+
+    const handleQueueUpdated = (data) => {
+        console.log("Queue updated:", data);
+        // Update the waitTime state with the new data
+        setWaitTime(data.estimatedWaitTime);
+    };
+
+    // Use the useSocket custom hook to establish the WebSocket connection
+    useSocket(handleQueueUpdated);
 
     useEffect(() => {
         const init = async () => {
             try {
                 let waitTimeRes = await serverAPI.getQueueWaittime();
-                console.log(waitTimeRes + 5);
-                setWaitTime(waitTimeRes + 5);
+                console.log(waitTimeRes);
+                setWaitTime(waitTimeRes);
             } catch (error) {
                 console.log(error);
             }
@@ -28,7 +38,7 @@ const StudentView = ({ navigation }) => {
                     <Text style={styles.nextPage}>Join the Queue for Help</Text>
                 </TouchableOpacity>
                 <View>
-                    <Text>Estimated wait time for queue: {waitTime}</Text>
+                    <Text>Estimated wait time for queue: {waitTime} minutes.</Text>
                 </View>
 
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("ScheduleAppointment")}>

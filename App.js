@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import TutorView from "./src/views/screens/TutorView";
@@ -8,6 +8,7 @@ import JoinTheQueue from "./src/views/screens/JoinTheQueue";
 import ScheduleAppointment from "./src/views/screens/ScheduleAnAppointment";
 import AboutTutors from "./src/views/screens/AboutTutors";
 import TutorCalendar from "./src/views/screens/TutorCalendar";
+
 const switchNavigator = createSwitchNavigator(
     {
         appFlow: createStackNavigator(
@@ -19,7 +20,6 @@ const switchNavigator = createSwitchNavigator(
                 ScheduleAppointment: ScheduleAppointment,
                 AboutTutors: AboutTutors,
                 TutorCalendar: TutorCalendar,
-
             },
             { initialRouteName: "Home" }
         ),
@@ -49,6 +49,8 @@ const switchNavigator = createSwitchNavigator(
 //         tutorFlow: createStackNavigator(
 //             {
 //                 Tutor: TutorView,
+//                 TutorCalendar: TutorCalendar,
+
 //             },
 //             { initialRouteName: "Tutor" }
 //         ),
@@ -61,5 +63,12 @@ const switchNavigator = createSwitchNavigator(
 const App = createAppContainer(switchNavigator);
 
 export default () => {
+    // const handleQueueUpdated = (data) => {
+    //     // Handle the updated Queue data here
+    //     console.log("Queue updated:", data);
+    // };
+
+    // useSocket(handleQueueUpdated);
+
     return <App />;
 };

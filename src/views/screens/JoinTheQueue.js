@@ -1,8 +1,49 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import serverAPI from "../../models/ServerAPI";
+import useSocket from "../../utils/socket";
 
 const JoinTheQueue = () => {
+    const [waitTime, setWaitTime] = useState(0);
+    const [queuePosition, setQueuePosition] = useState(0);
+
+    const user = { user: "Alex T" };
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                let waitTimeRes = await serverAPI.getQueueWaittime();
+                console.log(waitTimeRes);
+                setWaitTime(waitTimeRes);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        console.log(`useEffect Init Function`);
+        init();
+    }, []);
+
+    const handleQueueUpdated = (data) => {
+        console.log("Queue updated:", data);
+        setWaitTime(data.estimatedWaitTime);
+    };
+
+    const joinQueue = async (user) => {
+        let res = await serverAPI.studentJoinQueue(user);
+        console.log(res.data.position);
+        if (res.data.position) {
+            setQueuePosition(res.data.position);
+        }
+    };
+
+    const leaveQueue = async (user) => {
+        let res = await serverAPI.studentLeaveQueue(user);
+        console.log(res.data);
+        setQueuePosition(null);
+    };
+
+    useSocket(handleQueueUpdated);
+
     return (
         <View style={styles.background}>
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
@@ -10,18 +51,20 @@ const JoinTheQueue = () => {
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
-            <TouchableOpacity style={styles.button} onPress={() => serverAPI.joinQueue()}>
+            <TouchableOpacity style={styles.button} onPress={() => joinQueue(user)}>
                 <Text style={styles.buttonText}>Click to Join</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user)}>
+                <Text style={styles.buttonText}>Leave</Text>
             </TouchableOpacity>
 
             <View style={styles.row}>
                 <View style={styles.queue}>
-                    <Text>Estimated Wait Time:</Text>
-                    <Text>You are (number) in the Queue</Text>
-                </View>
+                    <Text>Estimated Wait Time for Queue:</Text>
+                    <Text>{waitTime} minutes</Text>
 
-                <View style={styles.queue}>
-                    <Text>insert Queue</Text>
+                    <Text>You are in position: </Text>
+                    <Text>{queuePosition === 0 || queuePosition === null ? "Not in line" : queuePosition}</Text>
                 </View>
             </View>
 
@@ -29,7 +72,6 @@ const JoinTheQueue = () => {
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     header: {
@@ -90,7 +132,7 @@ const styles = StyleSheet.create({
     footing: {
         textAlign: "center",
         bottom: 0,
-        
+
         //backgroundColor: "#F5FCFF",
     },
     joinQueue: {
@@ -108,10 +150,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     row: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-      },
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+    },
 });
 
 export default JoinTheQueue;
