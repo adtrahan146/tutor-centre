@@ -64,7 +64,7 @@ const JoinTheQueue = () => {
                     <Text>{waitTime} minutes</Text>
 
                     <Text>You are in position: </Text>
-                    <Text>{queuePosition === 0 || null ? "Not in line" : queuePosition}</Text>
+                    <Text>{queuePosition === 0 || queuePosition === null ? "Not in line" : queuePosition}</Text>
                 </View>
             </View>
 
