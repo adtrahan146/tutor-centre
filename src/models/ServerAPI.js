@@ -42,6 +42,17 @@ class ServerAPI {
             console.log(error);
         }
     }
+    async studentLeaveQueue(user) {
+        try {
+            let res = await this.api.post("student/leaveQueue/", user);
+            if (res.data) {
+                console.log(res.data);
+            }
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 const serverAPI = new ServerAPI();

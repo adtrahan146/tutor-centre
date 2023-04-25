@@ -35,7 +35,13 @@ const JoinTheQueue = () => {
             setQueuePosition(res.data.position);
         }
     };
-    // Use the useSocket custom hook to establish the WebSocket connection
+
+    const leaveQueue = async (user) => {
+        let res = await serverAPI.studentLeaveQueue(user);
+        console.log(res.data);
+        setQueuePosition(null);
+    };
+
     useSocket(handleQueueUpdated);
 
     return (
@@ -48,6 +54,9 @@ const JoinTheQueue = () => {
             <TouchableOpacity style={styles.button} onPress={() => joinQueue(user)}>
                 <Text style={styles.buttonText}>Click to Join</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user)}>
+                <Text style={styles.buttonText}>Leave</Text>
+            </TouchableOpacity>
 
             <View style={styles.row}>
                 <View style={styles.queue}>
@@ -55,7 +64,7 @@ const JoinTheQueue = () => {
                     <Text>{waitTime} minutes</Text>
 
                     <Text>You are in position: </Text>
-                    <Text>{queuePosition === 0 ? "Not in line" : queuePosition}</Text>
+                    <Text>{queuePosition === 0 || null ? "Not in line" : queuePosition}</Text>
                 </View>
             </View>
 
