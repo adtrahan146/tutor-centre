@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View, Button, TouchableOpacity, Linking } from "react-native";
 import { removeUserFromQueue, alertNextPersonInQueue } from "../../models/tutorActions";
-import useSocket from "../../utils/socket";
+import { useSocket } from "../../context/socketContext";
 
 const TutorView = ({ navigation }) => {
     const [zoomLink, setZoomLink] = useState("https://uno.zoom.us/j/85759495736");
     const [waitTime, setWaitTime] = useState(0);
+    const socket = useSocket();
 
     const handleRemoveUser = async () => {
         const user = { user: "Alex T" };
@@ -21,7 +22,15 @@ const TutorView = ({ navigation }) => {
         console.log("Queue updated:", data);
         setWaitTime(data.estimatedWaitTime);
     };
-    useSocket(handleQueueUpdated);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("queue_updated", handleQueueUpdated);
+            return () => {
+                socket.off("queue_updated", handleQueueUpdated);
+            };
+        }
+    }, [socket]);
 
     const handleZoomLinkClick = () => {
         Linking.openURL(zoomLink);

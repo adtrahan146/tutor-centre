@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 //import { FaCalendarAlt } from "react-icons/fa";
 import serverAPI from "../../models/ServerAPI";
-import useSocket from "../../utils/socket";
+import { useSocket } from "../../context/socketContext";
+import { joinQueue, leaveQueue } from "../../models/studentActions";
 
 const JoinTheQueue = () => {
     const [waitTime, setWaitTime] = useState(0);
     const [queuePosition, setQueuePosition] = useState(0);
+    const [hasJoined, setHasJoined] = useState(false);
+    const [studentClass, setStudentClass] = useState("");
+    const [problemSummary, setProblemSummary] = useState("");
+    const [queueSize, setQueueSize] = useState(0);
+    const user = { studentId: "Alex T" };
 
-    const user = { user: "Alex T" };
+    const socket = useSocket();
 
     useEffect(() => {
         const init = async () => {
@@ -22,61 +28,73 @@ const JoinTheQueue = () => {
         };
         console.log(`useEffect Init Function`);
         init();
-    }, []);
-
-    const joinQueue = async (user) => {
-        let res = await serverAPI.studentJoinQueue(user);
-        console.log(res.data.position);
-        if (res.data.position) {
-            setQueuePosition(res.data.position);
+        if (queuePosition > queueSize) {
+            console.log(`here!!!!!`);
+            setQueuePosition((queuePosition) => queuePosition - 1);
         }
-    };
+    }, [queueSize]);
 
-    const leaveQueue = async (user) => {
-        let res = await serverAPI.studentLeaveQueue(user);
-        console.log(res.data);
-        setQueuePosition(null);
-    };
+    useEffect(() => {
+        if (socket) {
+            socket.on("queue_updated", handleQueueUpdated);
+            socket.on("tutor_alert_next_person", handleTutorAlertNextPerson);
+
+            return () => {
+                socket.off("queue_updated", handleQueueUpdated);
+                socket.off("tutor_alert_next_person", handleTutorAlertNextPerson);
+            };
+        }
+    }, [socket]);
 
     const handleQueueUpdated = (data) => {
         console.log("Queue updated:", data);
         setWaitTime(data.estimatedWaitTime);
+        if (data.size) {
+            setQueueSize(data.size);
+        }
     };
 
     const handleTutorAlertNextPerson = () => {
-        setQueuePosition(queuePosition - 1);
+        setQueuePosition((queuePosition) => queuePosition - 1);
     };
-
-    useSocket(handleQueueUpdated, handleTutorAlertNextPerson);
 
     return (
         <View style={styles.background}>
-
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
-            <View style={styles.spacing} />
-
-            <View style={styles.row}>
-                <TouchableOpacity onPress={() => joinQueue(user)}>
-                    <Text style={styles.buttonJoin}>Join Queue</Text>
+            {hasJoined ? (
+                <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
+                    <Text style={styles.buttonLeave}>Leave</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => leaveQueue(user)}>
-                    <Text style={styles.buttonLeave}>Leave Queue</Text>
-                </TouchableOpacity>
-            </View>
+            ) : (
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputContainer}>
+                        <Text>Class:</Text>
+                        <TextInput style={styles.input} onChangeText={setStudentClass} value={studentClass} placeholder="Enter your class" />
+                    </View>
 
-            <View style={styles.spacing2} />
+                    <View style={styles.inputContainer}>
+                        <Text>One sentence summary of the problem:</Text>
+                        <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
+                        <Text style={styles.buttonJoin}>Click to Join</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
 
             <View style={styles.row}>
                 <View style={styles.queue}>
-                    <Text>Estimated Wait Time for Queue:</Text>
+                    <Text>Estimated Total Wait Time for Queue:</Text>
                     <Text>{waitTime} minutes</Text>
 
                     <Text>You are in position: </Text>
-                    <Text>{queuePosition === 0 || queuePosition === null ? "Not in line" : queuePosition}</Text>
+                    <Text>
+                        {queuePosition <= 0 || queuePosition === null ? "Not in line" : queuePosition} of {queueSize}
+                    </Text>
                 </View>
             </View>
 
@@ -90,6 +108,20 @@ const JoinTheQueue = () => {
 };
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        width: "100%",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+
+    input: {
+        height: 40,
+        borderColor: "gray",
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        width: "100%",
+    },
+
     header: {
         fontSize: 52,
         fontWeight: "bold",
@@ -186,7 +218,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "space-evenly",
-        
     },
     spacing: {
         height: 50,
