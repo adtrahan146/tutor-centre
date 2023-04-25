@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+//import { FaCalendarAlt } from "react-icons/fa";
 import serverAPI from "../../models/ServerAPI";
 import useSocket from "../../utils/socket";
 
@@ -50,17 +51,24 @@ const JoinTheQueue = () => {
 
     return (
         <View style={styles.background}>
+
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
-            <TouchableOpacity style={styles.button} onPress={() => joinQueue(user)}>
-                <Text style={styles.buttonText}>Click to Join</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user)}>
-                <Text style={styles.buttonText}>Leave</Text>
-            </TouchableOpacity>
+            <View style={styles.spacing} />
+
+            <View style={styles.row}>
+                <TouchableOpacity onPress={() => joinQueue(user)}>
+                    <Text style={styles.buttonJoin}>Join Queue</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => leaveQueue(user)}>
+                    <Text style={styles.buttonLeave}>Leave Queue</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.spacing2} />
 
             <View style={styles.row}>
                 <View style={styles.queue}>
@@ -72,7 +80,11 @@ const JoinTheQueue = () => {
                 </View>
             </View>
 
-            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
+            {/*<View style={styles.footing}>
+                <TouchableOpacity onPress={() => navigation.navigate("ScheduleAppointment")}>
+                    <FaCalendarAlt />
+                </TouchableOpacity> 
+            </View>*/}
         </View>
     );
 };
@@ -94,11 +106,25 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         borderColor: "black",
     },
-    button: {
-        backgroundColor: "#007AFF",
+    buttonJoin: {
+        backgroundColor: "#4CBB17",
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
+        marginRight: 20,
+        fontSize: 20,
+        fontWeight: "500",
+        color: "white",
+    },
+    buttonLeave: {
+        backgroundColor: "#D22B2B",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 5,
+        marginRight: 20,
+        fontSize: 20,
+        fontWeight: "500",
+        color: "white",
     },
     container: {
         flex: 1,
@@ -136,6 +162,7 @@ const styles = StyleSheet.create({
     footing: {
         textAlign: "center",
         bottom: 0,
+        alignSelf: "flex-start",
 
         //backgroundColor: "#F5FCFF",
     },
@@ -148,15 +175,24 @@ const styles = StyleSheet.create({
     },
 
     background: {
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        flexDirection: "column",
+        //height: 500, //column
     },
     row: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
+        
+    },
+    spacing: {
+        height: 50,
+    },
+    spacing2: {
+        height: 10,
     },
 });
 
