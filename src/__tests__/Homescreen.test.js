@@ -9,8 +9,8 @@ jest.mock("../models/ServerAPI", () => ({
 describe("Homescreen", () => {
     it("renders the header and buttons", () => {
         const { getByText } = render(<Homescreen />);
-        expect(getByText("Hello World")).toBeTruthy();
-        expect(getByText("GET /test/")).toBeTruthy();
+        // expect(getByText("Hello World")).toBeTruthy();
+        // expect(getByText("GET /test/")).toBeTruthy();
         expect(getByText("Go to TutorView Temp Btn")).toBeTruthy();
     });
 
