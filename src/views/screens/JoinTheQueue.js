@@ -44,7 +44,7 @@ const JoinTheQueue = () => {
     };
 
     const handleTutorAlertNextPerson = () => {
-        setQueuePosition(queuePosition - 1);
+        setQueuePosition((queuePosition) => queuePosition - 1);
     };
 
     return (
