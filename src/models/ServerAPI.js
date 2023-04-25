@@ -31,9 +31,9 @@ class ServerAPI {
         }
     }
 
-    async studentJoinQueue(user) {
+    async studentJoinQueue(studentId, studentClass, problemSummary) {
         try {
-            let res = await this.api.post("student/joinQueue/", user);
+            let res = await this.api.post("student/joinQueue/", { studentId, studentClass, problemSummary });
             if (res.data) {
                 console.log(res.data);
             }
@@ -42,9 +42,9 @@ class ServerAPI {
             console.log(error);
         }
     }
-    async studentLeaveQueue(user) {
+    async studentLeaveQueue(studentId) {
         try {
-            let res = await this.api.post("student/leaveQueue/", user);
+            let res = await this.api.post("student/leaveQueue/", { studentId });
             if (res.data) {
                 console.log(res.data);
             }
@@ -54,9 +54,9 @@ class ServerAPI {
         }
     }
 
-    async tutorRemoveUser(user) {
+    async tutorRemoveUser(studentId) {
         try {
-            let res = await this.api.post("tutor/removeUser/", user);
+            let res = await this.api.post("tutor/removeUser/", studentId);
             if (res.data) {
                 console.log(res.data);
             }
