@@ -49,6 +49,8 @@ const switchNavigator = createSwitchNavigator(
 //         tutorFlow: createStackNavigator(
 //             {
 //                 Tutor: TutorView,
+//                 TutorCalendar: TutorCalendar,
+
 //             },
 //             { initialRouteName: "Tutor" }
 //         ),
