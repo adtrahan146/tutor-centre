@@ -1,10 +1,11 @@
 import axios from "axios";
+import { LOCAL_HOST } from "@env";
 
 class ServerAPI {
     api;
     constructor() {
         this.api = axios.create({
-            baseURL: "http://localhost:3000",
+            baseURL: `http://${LOCAL_HOST}:3000`,
             timeout: 5000,
         });
     }
@@ -26,9 +27,20 @@ class ServerAPI {
             }
             return res;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        
+    }
+
+    async studentJoinQueue(user) {
+        try {
+            let res = await this.api.post("student/joinQueue/", user);
+            if (res.data) {
+                console.log(res.data);
+            }
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
