@@ -8,57 +8,37 @@ import JoinTheQueue from "./src/views/screens/JoinTheQueue";
 import ScheduleAppointment from "./src/views/screens/ScheduleAnAppointment";
 import AboutTutors from "./src/views/screens/AboutTutors";
 import TutorCalendar from "./src/views/screens/TutorCalendar";
+import { SocketProvider } from "./src/context/socketContext";
 
 const switchNavigator = createSwitchNavigator(
     {
-        appFlow: createStackNavigator(
+        notSignedInFlow: createStackNavigator(
             {
                 Home: Homescreen,
-                Tutor: TutorView,
+            },
+            { initialRouteName: "Home" }
+        ),
+        studentFlow: createStackNavigator(
+            {
                 Student: StudentView,
                 JoinTheQueue: JoinTheQueue,
                 ScheduleAppointment: ScheduleAppointment,
                 AboutTutors: AboutTutors,
+            },
+            { initialRouteName: "Student" }
+        ),
+        tutorFlow: createStackNavigator(
+            {
+                Tutor: TutorView,
                 TutorCalendar: TutorCalendar,
             },
-            { initialRouteName: "Home" }
+            { initialRouteName: "Tutor" }
         ),
     },
     {
-        initialRouteName: "appFlow",
+        initialRouteName: "notSignedInFlow",
     }
 );
-
-// const switchNavigator = createSwitchNavigator(
-//     {
-//         notSignedInFlow: createStackNavigator(
-//             {
-//                 Home: Homescreen,
-//             },
-//             { initialRouteName: "Home" }
-//         ),
-//         studentFlow: createStackNavigator(
-//             {
-//                 Student: StudentView,
-//                 JoinTheQueue: JoinTheQueue,
-//                 ScheduleAppointment: ScheduleAppointment,
-//                 AboutTutors: AboutTutors,
-//             },
-//             { initialRouteName: "Student" }
-//         ),
-//         tutorFlow: createStackNavigator(
-//             {
-//                 Tutor: TutorView,
-//                 TutorCalendar: TutorCalendar,
-
-//             },
-//             { initialRouteName: "Tutor" }
-//         ),
-//     },
-//     {
-//         initialRouteName: "notSignedInFlow",
-//     }
-// );
 
 const App = createAppContainer(switchNavigator);
 
@@ -70,5 +50,9 @@ export default () => {
 
     // useSocket(handleQueueUpdated);
 
-    return <App />;
+    return (
+        <SocketProvider>
+            <App />
+        </SocketProvider>
+    );
 };

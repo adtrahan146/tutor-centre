@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import serverAPI from "../../models/ServerAPI";
-import useSocket from "../../utils/socket";
+import { useSocket } from "../../context/socketContext";
+import { joinQueue, leaveQueue } from "../../models/studentActions";
 
 const JoinTheQueue = () => {
     const [waitTime, setWaitTime] = useState(0);
     const [queuePosition, setQueuePosition] = useState(0);
 
     const user = { user: "Alex T" };
+
+    const socket = useSocket();
 
     useEffect(() => {
         const init = async () => {
@@ -23,19 +26,17 @@ const JoinTheQueue = () => {
         init();
     }, []);
 
-    const joinQueue = async (user) => {
-        let res = await serverAPI.studentJoinQueue(user);
-        console.log(res.data.position);
-        if (res.data.position) {
-            setQueuePosition(res.data.position);
-        }
-    };
+    useEffect(() => {
+        if (socket) {
+            socket.on("queue_updated", handleQueueUpdated);
+            socket.on("tutor_alert_next_person", handleTutorAlertNextPerson);
 
-    const leaveQueue = async (user) => {
-        let res = await serverAPI.studentLeaveQueue(user);
-        console.log(res.data);
-        setQueuePosition(null);
-    };
+            return () => {
+                socket.off("queue_updated", handleQueueUpdated);
+                socket.off("tutor_alert_next_person", handleTutorAlertNextPerson);
+            };
+        }
+    }, [socket]);
 
     const handleQueueUpdated = (data) => {
         console.log("Queue updated:", data);
@@ -46,8 +47,6 @@ const JoinTheQueue = () => {
         setQueuePosition(queuePosition - 1);
     };
 
-    useSocket(handleQueueUpdated, handleTutorAlertNextPerson);
-
     return (
         <View style={styles.background}>
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
@@ -55,10 +54,10 @@ const JoinTheQueue = () => {
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
-            <TouchableOpacity style={styles.button} onPress={() => joinQueue(user)}>
+            <TouchableOpacity style={styles.button} onPress={() => joinQueue(user, setQueuePosition)}>
                 <Text style={styles.buttonText}>Click to Join</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user)}>
+            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, setQueuePosition)}>
                 <Text style={styles.buttonText}>Leave</Text>
             </TouchableOpacity>
 

@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import serverAPI from "../../models/ServerAPI";
-import useSocket from "../../utils/socket";
+import { useSocket } from "../../context/socketContext";
 
 const StudentView = ({ navigation }) => {
     const [waitTime, setWaitTime] = useState(0);
+    // const socket = useSocket();
 
-    const handleQueueUpdated = (data) => {
-        console.log("Queue updated:", data);
-        // Update the waitTime state with the new data
-        setWaitTime(data.estimatedWaitTime);
-    };
+    // const handleQueueUpdated = (data) => {
+    //     console.log("Queue updated:", data);
+    //     // Update the waitTime state with the new data
+    //     setWaitTime(data.estimatedWaitTime);
+    // };
 
-    // Use the useSocket custom hook to establish the WebSocket connection
-    useSocket(handleQueueUpdated);
+    // useEffect(() => {
+    //     if (socket) {
+    //         socket.on("queue_updated", handleQueueUpdated);
+
+    //         return () => {
+    //             socket.off("queue_updated", handleQueueUpdated);
+    //         };
+    //     }
+    // }, [socket]);
 
     useEffect(() => {
         const init = async () => {
