@@ -1,8 +1,27 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Text, StyleSheet, View, Button, TouchableOpacity, Linking } from "react-native";
+import { removeUserFromQueue, alertNextPersonInQueue } from "../../models/tutorActions";
+import useSocket from "../../utils/socket";
 
-const TutorView = ({navigation}) => {
-    const [zoomLink, setZoomLink] = useState('https://uno.zoom.us/j/85759495736');
+const TutorView = ({ navigation }) => {
+    const [zoomLink, setZoomLink] = useState("https://uno.zoom.us/j/85759495736");
+    const [waitTime, setWaitTime] = useState(0);
+
+    const handleRemoveUser = async () => {
+        const user = { user: "Alex T" };
+        const result = await removeUserFromQueue(user);
+        console.log("User removed:", result);
+    };
+
+    const handleAlertNextPerson = async () => {
+        const result = await alertNextPersonInQueue();
+        console.log("Next person alerted:", result);
+    };
+    const handleQueueUpdated = (data) => {
+        console.log("Queue updated:", data);
+        setWaitTime(data.estimatedWaitTime);
+    };
+    useSocket(handleQueueUpdated);
 
     const handleZoomLinkClick = () => {
         Linking.openURL(zoomLink);
@@ -11,14 +30,30 @@ const TutorView = ({navigation}) => {
         <View style={styles.view}>
             <Text style={styles.toptext}>UNO CSCI JAVA HELP DESK</Text>
             <Text style={styles.toptext2}>WELCOME TUTORS!</Text>
-            <TouchableOpacity onPress={function () {alert("I love tutors!");}}>
-                <Text style={styles.button} >View Live Student Queue</Text>
+            <TouchableOpacity
+                onPress={function () {
+                    alert("I love tutors!");
+                }}>
+                <Text style={styles.button}>Wait Time: {waitTime}mins</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{navigation.navigate("TutorCalendar")}}>
-                <Text style={styles.button} >View Calendy Schedule</Text>
+
+            <View>
+                <TouchableOpacity onPress={handleRemoveUser}>
+                    <Text style={styles.button}>Remove User</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleAlertNextPerson}>
+                    <Text style={styles.button}>Alert Next Person</Text>
+                </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate("TutorCalendar");
+                }}>
+                <Text style={styles.button}>View Calendy Schedule</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleZoomLinkClick}>
-                <Text style={styles.button} >Launch the                 Zoom</Text>
+                <Text style={styles.button}>Launch the Zoom</Text>
             </TouchableOpacity>
         </View>
     );
@@ -31,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: "center", //space-between space-around //flex-start flex-end center stretch
         flexDirection: "column",
         alignItems: "center",
-        height:500 //column
+        height: 500, //column
     },
     toptext: {
         fontSize: 25,
@@ -48,22 +83,22 @@ const styles = StyleSheet.create({
         alignItems: "center", //flex-start flex-end center stretch
         flexDirection: "column",
         fontWeight: "bold",
-        marginBottom: 20
+        marginBottom: 20,
     },
     button: {
         marginHorizontal: 5,
-        backgroundColor: 'rgba(0,82,145,255)',
-        color: 'rgba(227, 228, 228, 1)',
+        backgroundColor: "rgba(0,82,145,255)",
+        color: "rgba(227, 228, 228, 1)",
         fontSize: 20,
-        fontWeight: '500',
+        fontWeight: "500",
         paddingVertical: 5,
         marginVertical: 5,
         paddingHorizontal: 10,
         width: 200,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'grey',
-        marginRight: 130
+        borderColor: "grey",
+        marginRight: 130,
     },
 }); //npx expo-cli init food --npm or npx react-native-cli init food --npm
 

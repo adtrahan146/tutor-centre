@@ -6,7 +6,7 @@ class ServerAPI {
     constructor() {
         this.api = axios.create({
             baseURL: `http://${LOCAL_HOST}:3000`,
-            timeout: 5000,
+            timeout: 10000,
         });
     }
 
@@ -51,6 +51,30 @@ class ServerAPI {
             return res;
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async tutorRemoveUser(user) {
+        try {
+            let res = await this.api.post("tutor/removeUser/", user);
+            if (res.data) {
+                console.log(res.data);
+            }
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async tutorAlertNextPerson() {
+        try {
+            let res = await this.api.post("tutor/alertNextPerson/");
+            if (res.data) {
+                // console.log(res.data);
+            }
+            return res;
+        } catch (error) {
+            console.log(error.stack);
         }
     }
 }
