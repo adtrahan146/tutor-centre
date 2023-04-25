@@ -23,11 +23,6 @@ const JoinTheQueue = () => {
         init();
     }, []);
 
-    const handleQueueUpdated = (data) => {
-        console.log("Queue updated:", data);
-        setWaitTime(data.estimatedWaitTime);
-    };
-
     const joinQueue = async (user) => {
         let res = await serverAPI.studentJoinQueue(user);
         console.log(res.data.position);
@@ -42,7 +37,16 @@ const JoinTheQueue = () => {
         setQueuePosition(null);
     };
 
-    useSocket(handleQueueUpdated);
+    const handleQueueUpdated = (data) => {
+        console.log("Queue updated:", data);
+        setWaitTime(data.estimatedWaitTime);
+    };
+
+    const handleTutorAlertNextPerson = () => {
+        setQueuePosition(queuePosition - 1);
+    };
+
+    useSocket(handleQueueUpdated, handleTutorAlertNextPerson);
 
     return (
         <View style={styles.background}>
