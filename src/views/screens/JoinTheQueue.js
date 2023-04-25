@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import serverAPI from "../../models/ServerAPI";
 import { useSocket } from "../../context/socketContext";
 import { joinQueue, leaveQueue } from "../../models/studentActions";
@@ -7,8 +7,11 @@ import { joinQueue, leaveQueue } from "../../models/studentActions";
 const JoinTheQueue = () => {
     const [waitTime, setWaitTime] = useState(0);
     const [queuePosition, setQueuePosition] = useState(0);
-
-    const user = { user: "Alex T" };
+    const [hasJoined, setHasJoined] = useState(false);
+    const [studentClass, setStudentClass] = useState("");
+    const [problemSummary, setProblemSummary] = useState("");
+    const [queueSize, setQueueSize] = useState(0);
+    const user = { studentId: "Alex T" };
 
     const socket = useSocket();
 
@@ -24,7 +27,11 @@ const JoinTheQueue = () => {
         };
         console.log(`useEffect Init Function`);
         init();
-    }, []);
+        if (queuePosition > queueSize) {
+            console.log(`here!!!!!`);
+            setQueuePosition((queuePosition) => queuePosition - 1);
+        }
+    }, [queueSize]);
 
     useEffect(() => {
         if (socket) {
@@ -41,6 +48,9 @@ const JoinTheQueue = () => {
     const handleQueueUpdated = (data) => {
         console.log("Queue updated:", data);
         setWaitTime(data.estimatedWaitTime);
+        if (data.size) {
+            setQueueSize(data.size);
+        }
     };
 
     const handleTutorAlertNextPerson = () => {
@@ -54,20 +64,36 @@ const JoinTheQueue = () => {
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
-            <TouchableOpacity style={styles.button} onPress={() => joinQueue(user, setQueuePosition)}>
-                <Text style={styles.buttonText}>Click to Join</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, setQueuePosition)}>
-                <Text style={styles.buttonText}>Leave</Text>
-            </TouchableOpacity>
+            {hasJoined ? (
+                <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
+                    <Text style={styles.buttonText}>Leave</Text>
+                </TouchableOpacity>
+            ) : (
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputContainer}>
+                        <Text>Class:</Text>
+                        <TextInput style={styles.input} onChangeText={setStudentClass} value={studentClass} placeholder="Enter your class" />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text>One sentence summary of the problem:</Text>
+                        <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
+                        <Text style={styles.buttonText}>Click to Join</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
 
             <View style={styles.row}>
                 <View style={styles.queue}>
-                    <Text>Estimated Wait Time for Queue:</Text>
+                    <Text>Estimated Total Wait Time for Queue:</Text>
                     <Text>{waitTime} minutes</Text>
 
                     <Text>You are in position: </Text>
-                    <Text>{queuePosition === 0 || queuePosition === null ? "Not in line" : queuePosition}</Text>
+                    <Text>
+                        {queuePosition <= 0 || queuePosition === null ? "Not in line" : queuePosition} of {queueSize}
+                    </Text>
                 </View>
             </View>
 
@@ -77,6 +103,20 @@ const JoinTheQueue = () => {
 };
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        width: "100%",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+
+    input: {
+        height: 40,
+        borderColor: "gray",
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        width: "100%",
+    },
+
     header: {
         fontSize: 52,
         fontWeight: "bold",
