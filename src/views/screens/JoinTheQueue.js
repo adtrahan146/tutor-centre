@@ -5,7 +5,7 @@ import serverAPI from "../../models/ServerAPI";
 import { useSocket } from "../../context/socketContext";
 import { joinQueue, leaveQueue } from "../../models/studentActions";
 
-const JoinTheQueue = () => {
+const JoinTheQueue = ({ navigation }) => {
     const [waitTime, setWaitTime] = useState(0);
     const [queuePosition, setQueuePosition] = useState(null);
     const [hasJoined, setHasJoined] = useState(false);
@@ -66,6 +66,7 @@ const JoinTheQueue = () => {
         setIsBeingHelped(false);
         setHasJoined(false);
         setQueuePosition(null);
+        navigation.navigate("Student");
     };
 
     const handleTutorAlertNextPerson = () => {
