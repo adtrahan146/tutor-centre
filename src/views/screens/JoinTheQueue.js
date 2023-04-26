@@ -14,7 +14,7 @@ const JoinTheQueue = ({ navigation }) => {
     const [problemSummary, setProblemSummary] = useState("");
     const [queueSize, setQueueSize] = useState(0);
 
-    const user = { studentId: "Alex T" };
+    let user = { studentId: "Alex T", position: queuePosition };
 
     const socket = useSocket();
 
@@ -47,13 +47,15 @@ const JoinTheQueue = ({ navigation }) => {
         if (socket) {
             socket.on("queue_updated", handleQueueUpdated);
             socket.on("tutor_alert_next_person", handleTutorAlertNextPerson);
+            socket.on("user_left", handleUserLeft);
 
             return () => {
                 socket.off("queue_updated", handleQueueUpdated);
                 socket.off("tutor_alert_next_person", handleTutorAlertNextPerson);
+                socket.off("user_left", handleUserLeft);
             };
         }
-    }, [socket]);
+    }, [socket, queuePosition]);
 
     const handleQueueUpdated = (data) => {
         console.log("Queue updated:", data);
@@ -73,6 +75,15 @@ const JoinTheQueue = ({ navigation }) => {
         setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
     };
 
+    const handleUserLeft = (data) => {
+        console.log(`Data for other user leaving: `, data);
+        let otherPosLeft = data.position;
+        console.log(`queuePos: `, queuePosition);
+        if (otherPosLeft < queuePosition) {
+            setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
+        }
+    };
+
     return (
         <View style={styles.background}>
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
@@ -84,7 +95,7 @@ const JoinTheQueue = ({ navigation }) => {
                 <HelpInProgress onDoneBeingHelped={handleDoneBeingHelped} />
             ) : hasJoined ? (
                 <View>
-                    <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
+                    <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, handleDoneBeingHelped)}>
                         <Text style={styles.buttonText}>Leave</Text>
                     </TouchableOpacity>
                     <View style={styles.row}>
