@@ -13,11 +13,11 @@ const joinQueue = async (user, setQueuePosition, setHasJoined, studentClass, pro
     }
 };
 
-const leaveQueue = async (user, setQueuePosition, setHasJoined) => {
-    let res = await serverAPI.studentLeaveQueue(user);
+const leaveQueue = async (user, handleDoneBeingHelped) => {
+    let position = user.position;
+    let res = await serverAPI.studentLeaveQueue(user.studentId, position);
     console.log(res.data);
-    setQueuePosition(null);
-    setHasJoined(false);
+    handleDoneBeingHelped();
 };
 
 export { joinQueue, leaveQueue };

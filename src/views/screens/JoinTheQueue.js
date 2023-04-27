@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import HelpInProgress from "../components/HelpInProgress";
+=======
 //import { FaCalendarAlt } from "react-icons/fa";
 import serverAPI from "../../models/ServerAPI";
 import { useSocket } from "../../context/socketContext";
 import { joinQueue, leaveQueue } from "../../models/studentActions";
 
-const JoinTheQueue = () => {
+const JoinTheQueue = ({ navigation }) => {
     const [waitTime, setWaitTime] = useState(0);
-    const [queuePosition, setQueuePosition] = useState(0);
+    const [queuePosition, setQueuePosition] = useState(null);
     const [hasJoined, setHasJoined] = useState(false);
+    const [isBeingHelped, setIsBeingHelped] = useState(false);
     const [studentClass, setStudentClass] = useState("");
     const [problemSummary, setProblemSummary] = useState("");
     const [queueSize, setQueueSize] = useState(0);
-    const user = { studentId: "Alex T" };
+
+    let user = { studentId: "Alex T", position: queuePosition };
 
     const socket = useSocket();
 
@@ -26,36 +30,60 @@ const JoinTheQueue = () => {
                 console.log(error);
             }
         };
-        console.log(`useEffect Init Function`);
         init();
+    }, []);
+
+    useEffect(() => {
         if (queuePosition > queueSize) {
             console.log(`here!!!!!`);
-            setQueuePosition((queuePosition) => queuePosition - 1);
+            setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
+        } else if (queuePosition === 0 && hasJoined) {
+            setIsBeingHelped(true);
+        } else if (queuePosition === null) {
+            setIsBeingHelped(false);
         }
-    }, [queueSize]);
+        console.log(`useEffect Init Function`);
+    }, [queueSize, queuePosition]);
 
     useEffect(() => {
         if (socket) {
             socket.on("queue_updated", handleQueueUpdated);
             socket.on("tutor_alert_next_person", handleTutorAlertNextPerson);
+            socket.on("user_left", handleUserLeft);
 
             return () => {
                 socket.off("queue_updated", handleQueueUpdated);
                 socket.off("tutor_alert_next_person", handleTutorAlertNextPerson);
+                socket.off("user_left", handleUserLeft);
             };
         }
-    }, [socket]);
+    }, [socket, queuePosition]);
 
     const handleQueueUpdated = (data) => {
         console.log("Queue updated:", data);
         setWaitTime(data.estimatedWaitTime);
-        if (data.size) {
-            setQueueSize(data.size);
-        }
+        setQueueSize(data.size);
+    };
+
+    const handleDoneBeingHelped = () => {
+        // Reset the states
+        setIsBeingHelped(false);
+        setHasJoined(false);
+        setQueuePosition(null);
+        navigation.navigate("Student");
     };
 
     const handleTutorAlertNextPerson = () => {
-        setQueuePosition((queuePosition) => queuePosition - 1);
+        setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
+    };
+
+    const handleUserLeft = (data) => {
+        console.log(`Data for other user leaving: `, data);
+        let otherPosLeft = data.position;
+        console.log(`queuePos: `, queuePosition);
+        if (otherPosLeft < queuePosition) {
+            setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
+        }
     };
 
     return (
@@ -65,12 +93,29 @@ const JoinTheQueue = () => {
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
+            {isBeingHelped ? (
+                <HelpInProgress onDoneBeingHelped={handleDoneBeingHelped} />
+            ) : hasJoined ? (
+                <View>
+                    <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, handleDoneBeingHelped)}>
+                        <Text style={styles.buttonText}>Leave</Text>
+                    </TouchableOpacity>
+                    <View style={styles.row}>
+                        <View style={styles.queue}>
+                            <Text>Estimated Total Wait Time for Queue:</Text>
+                            <Text>{waitTime} minutes</Text>
+                            <Text>
+                                {queuePosition === null ? "Not in line" : "Your Position: " + queuePosition}, Total in line: {queueSize}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
             {hasJoined ? (
                 <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
                     <Text style={styles.buttonLeave}>Leave</Text>
                 </TouchableOpacity>
             ) : (
-                <View style={styles.inputContainer}>
+                <View>
                     <View style={styles.inputContainer}>
                         <Text>Class:</Text>
                         <TextInput style={styles.input} onChangeText={setStudentClass} value={studentClass} placeholder="Enter your class" />
@@ -83,9 +128,19 @@ const JoinTheQueue = () => {
                     <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
                         <Text style={styles.buttonJoin}>Click to Join</Text>
                     </TouchableOpacity>
+                    <View style={styles.row}>
+                        <View style={styles.queue}>
+                            <Text>Estimated Total Wait Time for Queue:</Text>
+                            <Text>{waitTime} minutes</Text>
+                            <Text>
+                                {queuePosition === null ? "Not in line" : "Your Position: " + queuePosition}, Total in line: {queueSize}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
             )}
 
+            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
             <View style={styles.row}>
                 <View style={styles.queue}>
                     <Text>Estimated Total Wait Time for Queue:</Text>

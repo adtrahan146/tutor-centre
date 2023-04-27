@@ -42,9 +42,9 @@ class ServerAPI {
             console.log(error);
         }
     }
-    async studentLeaveQueue(studentId) {
+    async studentLeaveQueue(studentId, position) {
         try {
-            let res = await this.api.post("student/leaveQueue/", { studentId });
+            let res = await this.api.post("student/leaveQueue/", { studentId, position });
             if (res.data) {
                 console.log(res.data);
             }
