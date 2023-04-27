@@ -54,7 +54,8 @@ const ScheduleAppointment = () =>
                 name: 'Jon Snow'
             }}
             styles={{
-                height: '1000px'
+                height: '600px',
+                width: '1000px'
             }}
             url="https://calendly.com/tutorcentertest"
             utm={{

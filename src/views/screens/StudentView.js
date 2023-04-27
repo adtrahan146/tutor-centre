@@ -50,7 +50,7 @@ const StudentView = ({ navigation }) => {
                     
                 </TouchableOpacity>
                 <View>
-                    <Text>Estimated wait time for queue: {waitTime} minutes.</Text>
+                    <Text style={styles.text}>Estimated wait time for queue: {waitTime} minutes.</Text>
                 </View>
 
                 <TouchableOpacity onPress={() => navigation.navigate("ScheduleAppointment")}>
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
         color: "rgba(227, 228, 228, 1)",
         fontSize: 20,
         fontWeight: "500",
+        //for buttons
         paddingVertical: 5,
         marginVertical: 5,
         paddingHorizontal: 10,
@@ -93,7 +94,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: "grey",
-        marginRight: 130,
+        //marginRight: 130,
+        justifyContent: "center",
+        alignItems: "center",
     },
     aboutImg: {
         width: 30,
@@ -137,6 +140,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "center",
         flexDirection: "column",
+    },
+    text: {
+        fontWeight: "bold",
+        fontSize: 15,
+        
     },
 });
 

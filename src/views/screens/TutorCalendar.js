@@ -1,22 +1,25 @@
 import React from "react";
 import {Text, StyleSheet, View, WebView} from "react-native";
+import Iframe from 'react-iframe'
 
 const TutorCalendar=()=>{
     return(
         <View style={styles.mainView}>
-            <Text>Calendars</Text>
+            <Iframe url="https://www.uno.edu/academics/cos/computer-science/undergraduate/tutoring-schedule"
+            position="absolute"
+            width="100%"
+            id="myId"
+            className="myClassname"
+            height="100%"
+            styles={{height: "600px", width: "1000px"}}/>
         </View>    
         );
 };
 const styles= StyleSheet.create({
     mainView: {
         //automatically set to flex=column align=stretch
-        borderColor: "black",
-        borderWidth: 3,
-        justifyContent: "center", //space-between space-around //flex-start flex-end center stretch
-        flexDirection: "column",
+        //justifyContent: "center", //space-between space-around //flex-start flex-end center stretch
         alignItems: "center",
-        height:500 //column
     },
 
     calendarText: {
