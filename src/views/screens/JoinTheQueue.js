@@ -121,7 +121,7 @@ const JoinTheQueue = ({ navigation }) => {
                         <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
                     </View>
                     <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
-                        <Text style={styles.buttonJoin}>Click to Join</Text>
+                        <Text style={styles.buttonText}>Click to Join</Text>
                     </TouchableOpacity>
                     <View style={styles.row}>
                         <View style={styles.queue}>
@@ -136,23 +136,6 @@ const JoinTheQueue = ({ navigation }) => {
             )}
 
             <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
-            <View style={styles.row}>
-                <View style={styles.queue}>
-                    <Text>Estimated Total Wait Time for Queue:</Text>
-                    <Text>{waitTime} minutes</Text>
-
-                    <Text>You are in position: </Text>
-                    <Text>
-                        {queuePosition <= 0 || queuePosition === null ? "Not in line" : queuePosition} of {queueSize}
-                    </Text>
-                </View>
-            </View>
-
-            {/*<View style={styles.footing}>
-                <TouchableOpacity onPress={() => navigation.navigate("ScheduleAppointment")}>
-                    <FaCalendarAlt />
-                </TouchableOpacity> 
-            </View>*/}
         </View>
     );
 };
