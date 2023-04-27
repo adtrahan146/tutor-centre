@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import HelpInProgress from "../components/HelpInProgress";
+=======
+//import { FaCalendarAlt } from "react-icons/fa";
 import serverAPI from "../../models/ServerAPI";
 import { useSocket } from "../../context/socketContext";
 import { joinQueue, leaveQueue } from "../../models/studentActions";
@@ -108,6 +110,10 @@ const JoinTheQueue = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
+            {hasJoined ? (
+                <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
+                    <Text style={styles.buttonLeave}>Leave</Text>
+                </TouchableOpacity>
             ) : (
                 <View>
                     <View style={styles.inputContainer}>
@@ -120,7 +126,7 @@ const JoinTheQueue = ({ navigation }) => {
                         <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
                     </View>
                     <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
-                        <Text style={styles.buttonText}>Click to Join</Text>
+                        <Text style={styles.buttonJoin}>Click to Join</Text>
                     </TouchableOpacity>
                     <View style={styles.row}>
                         <View style={styles.queue}>
@@ -135,6 +141,23 @@ const JoinTheQueue = ({ navigation }) => {
             )}
 
             <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
+            <View style={styles.row}>
+                <View style={styles.queue}>
+                    <Text>Estimated Total Wait Time for Queue:</Text>
+                    <Text>{waitTime} minutes</Text>
+
+                    <Text>You are in position: </Text>
+                    <Text>
+                        {queuePosition <= 0 || queuePosition === null ? "Not in line" : queuePosition} of {queueSize}
+                    </Text>
+                </View>
+            </View>
+
+            {/*<View style={styles.footing}>
+                <TouchableOpacity onPress={() => navigation.navigate("ScheduleAppointment")}>
+                    <FaCalendarAlt />
+                </TouchableOpacity> 
+            </View>*/}
         </View>
     );
 };
@@ -170,11 +193,25 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         borderColor: "black",
     },
-    button: {
-        backgroundColor: "#007AFF",
+    buttonJoin: {
+        backgroundColor: "#4CBB17",
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
+        marginRight: 20,
+        fontSize: 20,
+        fontWeight: "500",
+        color: "white",
+    },
+    buttonLeave: {
+        backgroundColor: "#D22B2B",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 5,
+        marginRight: 20,
+        fontSize: 20,
+        fontWeight: "500",
+        color: "white",
     },
     container: {
         flex: 1,
@@ -212,6 +249,7 @@ const styles = StyleSheet.create({
     footing: {
         textAlign: "center",
         bottom: 0,
+        alignSelf: "flex-start",
 
         //backgroundColor: "#F5FCFF",
     },
@@ -224,15 +262,23 @@ const styles = StyleSheet.create({
     },
 
     background: {
-        backgroundColor: "#F5FCFF",
+        //backgroundColor: "#F5FCFF",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        flexDirection: "column",
+        //height: 500, //column
     },
     row: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
+    },
+    spacing: {
+        height: 50,
+    },
+    spacing2: {
+        height: 10,
     },
 });
 

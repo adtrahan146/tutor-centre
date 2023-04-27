@@ -70,20 +70,21 @@ const TutorView = ({ navigation }) => {
 const styles = StyleSheet.create({
     view: {
         //automatically set to flex=column align=stretch
-        borderColor: "black",
-        borderWidth: 3,
+        //borderColor: "black",
+        //borderWidth: 3,
         justifyContent: "center", //space-between space-around //flex-start flex-end center stretch
         flexDirection: "column",
         alignItems: "center",
         height: 500, //column
     },
     toptext: {
-        fontSize: 25,
-        color: "black",
+        fontSize: 52,
+        color: "#293C7D",
         justifyContent: "center", //space-between space-around
         alignItems: "center", //flex-start flex-end center stretch
         flexDirection: "column",
         fontWeight: "bold",
+        textAlign: "center",
     },
     toptext2: {
         fontSize: 22,

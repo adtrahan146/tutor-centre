@@ -66,7 +66,6 @@ const ScheduleAppointment = () =>
             }}
             />
 
-            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
         </View>
     );
 };
@@ -129,7 +128,10 @@ const styles = StyleSheet.create
     },
 
     background:{
-        backgroundColor: "#F5FCFF",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        flexDirection: "column",
         
     }
 
