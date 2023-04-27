@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import HelpInProgress from "../components/HelpInProgress";
-=======
 //import { FaCalendarAlt } from "react-icons/fa";
 import serverAPI from "../../models/ServerAPI";
 import { useSocket } from "../../context/socketContext";
@@ -110,10 +109,6 @@ const JoinTheQueue = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-            {hasJoined ? (
-                <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user.studentId, setQueuePosition, setHasJoined)}>
-                    <Text style={styles.buttonLeave}>Leave</Text>
-                </TouchableOpacity>
             ) : (
                 <View>
                     <View style={styles.inputContainer}>
