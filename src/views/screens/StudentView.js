@@ -6,23 +6,23 @@ import { useSocket } from "../../context/socketContext";
 
 const StudentView = ({ navigation }) => {
     const [waitTime, setWaitTime] = useState(0);
-    // const socket = useSocket();
+    const socket = useSocket();
 
-    // const handleQueueUpdated = (data) => {
-    //     console.log("Queue updated:", data);
-    //     // Update the waitTime state with the new data
-    //     setWaitTime(data.estimatedWaitTime);
-    // };
+    const handleQueueUpdated = (data) => {
+        console.log("Queue updated:", data);
+        // Update the waitTime state with the new data
+        setWaitTime(data.estimatedWaitTime);
+    };
 
-    // useEffect(() => {
-    //     if (socket) {
-    //         socket.on("queue_updated", handleQueueUpdated);
+    useEffect(() => {
+        if (socket) {
+            socket.on("queue_updated", handleQueueUpdated);
 
-    //         return () => {
-    //             socket.off("queue_updated", handleQueueUpdated);
-    //         };
-    //     }
-    // }, [socket]);
+            return () => {
+                socket.off("queue_updated", handleQueueUpdated);
+            };
+        }
+    }, [socket]);
 
     useEffect(() => {
         const init = async () => {
@@ -40,14 +40,12 @@ const StudentView = ({ navigation }) => {
 
     return (
         <View style={styles.background}>
-
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
             <Text style={styles.toptext2}>WELCOME STUDENTS!</Text>
 
             <View style={styles.container}>
-                <TouchableOpacity  onPress={() => navigation.navigate("JoinTheQueue")}>
+                <TouchableOpacity onPress={() => navigation.navigate("JoinTheQueue")}>
                     <Text style={styles.buttonContainer}>Join the Queue for Help</Text>
-                    
                 </TouchableOpacity>
                 <View>
                     <Text style={styles.text}>Estimated wait time for queue: {waitTime} minutes.</Text>
@@ -144,7 +142,6 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: "bold",
         fontSize: 15,
-        
     },
 });
 
