@@ -90,52 +90,74 @@ const JoinTheQueue = ({ navigation }) => {
             <Text style={styles.header}>UNO Computer Science Tutor Center</Text>
 
             <Text style={styles.joinQueue}>Join the Queue for Help</Text>
+            <View style={styles.spacing2} />
             {/*<Text>Tutor: Jared Wise</Text>*/}
 
             {isBeingHelped ? (
                 <HelpInProgress onDoneBeingHelped={handleDoneBeingHelped} />
             ) : hasJoined ? (
                 <View>
-                    <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, handleDoneBeingHelped)}>
-                        <Text style={styles.buttonText}>Leave</Text>
-                    </TouchableOpacity>
+                    {/*QUEUE STUFF*/}
                     <View style={styles.row}>
                         <View style={styles.queue}>
-                            <Text>Estimated Total Wait Time for Queue:</Text>
-                            <Text>{waitTime} minutes</Text>
-                            <Text>
-                                {queuePosition === null ? "Not in line" : "Your Position: " + queuePosition}, Total in line: {queueSize}
-                            </Text>
+                            <Text style={styles.queueText}> You are now in line!</Text>
+                            <Text style={styles.queueText}>Here is your position in the queue:</Text>
+                            <View style={styles.circle}> 
+                                <Text style={styles.circleText}>
+                                    {queuePosition === null ? "Not in line" : queuePosition} 
+                                </Text>
+                                <Text style={styles.circleText2}> out of {queueSize} </Text>
+                            </View>
+                            <Text style={styles.queueText}>Estimated Total Wait Time:</Text>
+                            <Text style={styles.queueText}> {waitTime} minutes</Text>
                         </View>
                     </View>
+
+                    {/*LEAVE BUTTON*/}
+                    <TouchableOpacity style={styles.button} onPress={() => leaveQueue(user, handleDoneBeingHelped)}>
+                        <Text style={styles.buttonLeave}>Leave</Text>
+                    </TouchableOpacity>
                 </View>
             ) : (
                 <View>
+                    {/*QUEUE STUFF*/}
+                    <View style={styles.row}>
+                        <View style={styles.queue}>
+                            <Text style={styles.queueText}> Hi {user.studentId}!</Text>
+                            <Text style={styles.queueText}> Here is your position in the queue:</Text>
+                            <View style={styles.circle}> 
+                                <Text style={styles.circleText2}>
+                                    {queuePosition === null ? "Not in line" : queuePosition} 
+                                </Text>
+                            </View>
+                            <Text style={styles.queueText}>Total in queue: {queueSize}</Text>
+                            <View style={styles.row}> 
+                                <View style={styles.dots}> </View>
+                                <View style={styles.dots}> </View>
+                                <View style={styles.dots}> </View>
+                            </View>
+                            <Text style={styles.queueText}> Estimated Total Wait Time:</Text>
+                            <Text style={styles.queueText}> {waitTime} minutes</Text>
+                        </View>
+                    </View>
+
+                    {/*DATA COLLECTION AND JOIN THE QUEUE*/}
                     <View style={styles.inputContainer}>
-                        <Text>Class:</Text>
+                        <Text style={styles.dataCollection}>Class:</Text>
                         <TextInput style={styles.input} onChangeText={setStudentClass} value={studentClass} placeholder="Enter your class" />
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Text>One sentence summary of the problem:</Text>
+                        <Text style={styles.dataCollection}>In one sentence, what are you here to recieve help on?</Text>
                         <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
                     </View>
                     <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
-                        <Text style={styles.buttonText}>Click to Join</Text>
+                        <Text style={styles.buttonJoin}>Click to Join</Text>
                     </TouchableOpacity>
-                    <View style={styles.row}>
-                        <View style={styles.queue}>
-                            <Text>Estimated Total Wait Time for Queue:</Text>
-                            <Text>{waitTime} minutes</Text>
-                            <Text>
-                                {queuePosition === null ? "Not in line" : "Your Position: " + queuePosition}, Total in line: {queueSize}
-                            </Text>
-                        </View>
-                    </View>
                 </View>
             )}
 
-            <Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>
+            {/*<Text style={styles.footing}>Intro to Software Engineering Spring 2023</Text>*/}
         </View>
     );
 };
@@ -165,11 +187,20 @@ const styles = StyleSheet.create({
     queue: {
         //backgroundColor: "green",
         padding: 5,
-        color: "white",
-        width: 500,
-        height: 500,
-        borderWidth: 5,
-        borderColor: "black",
+        //color: "white",
+        width: 1000,
+        height: 300,
+        //justifyContent: "center",
+        alignItems: "center",
+        borderTopWidth: 5,
+        //borderColor: "black",
+        borderTopColor: "black",
+    },
+    queueText: {
+        fontSize: 22,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: "#0064A8",
     },
     buttonJoin: {
         backgroundColor: "#4CBB17",
@@ -180,16 +211,21 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "500",
         color: "white",
+        width: 200,
     },
     buttonLeave: {
         backgroundColor: "#D22B2B",
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
-        marginRight: 20,
+        //marginRight: 20,
         fontSize: 20,
         fontWeight: "500",
         color: "white",
+    },
+    button: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     container: {
         flex: 1,
@@ -218,6 +254,47 @@ const styles = StyleSheet.create({
     aboutText: {
         fontSize: 20,
     },
+
+    dataCollection: {
+        fontSize: 20,
+        fontWeight: "bold",
+        fontFamily: "Helvetica"
+    },
+
+    circle: {
+        width: 100,
+        height: 100,
+        borderRadius: 100 / 2,
+        backgroundColor: "#FFBF3F",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+
+      circleText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: "white"
+      },
+
+      circleText2: {
+        fontSize: 15,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: "black"
+      },
+      
+      dots: {
+        width: 7,
+        height: 7,
+        borderRadius: 7 / 2,
+        backgroundColor: "#FFBF3F",
+        marginRight: 2,
+        marginTop: 7,
+        marginBottom: 7,
+        //justifyContent: "center",
+        //alignItems: "center",
+      },
 
     nextPage: {
         color: "#FFFFFF",
@@ -258,6 +335,7 @@ const styles = StyleSheet.create({
     spacing2: {
         height: 10,
     },
+
 });
 
 export default JoinTheQueue;

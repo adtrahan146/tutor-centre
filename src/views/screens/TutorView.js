@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: "grey",
-        marginRight: 130,
+        //marginRight: 130,
     },
 }); //npx expo-cli init food --npm or npx react-native-cli init food --npm
 
