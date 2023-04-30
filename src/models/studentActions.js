@@ -2,7 +2,7 @@ import serverAPI from "./ServerAPI";
 
 const joinQueue = async (user, setQueuePosition, setHasJoined, studentClass, problemSummary) => {
     if (studentClass && problemSummary) {
-        let res = await serverAPI.studentJoinQueue(user, studentClass, problemSummary);
+        let res = await serverAPI.studentJoinQueue(user.studentId, studentClass, problemSummary);
         console.log(res.data.position);
         if (res.data.position) {
             setQueuePosition(res.data.position);

@@ -49,11 +49,13 @@ const JoinTheQueue = ({ navigation }) => {
             socket.on("queue_updated", handleQueueUpdated);
             socket.on("tutor_alert_next_person", handleTutorAlertNextPerson);
             socket.on("user_left", handleUserLeft);
+            // socket.on("tutor_remove_user", handleTutorRemoveUser);
 
             return () => {
                 socket.off("queue_updated", handleQueueUpdated);
                 socket.off("tutor_alert_next_person", handleTutorAlertNextPerson);
                 socket.off("user_left", handleUserLeft);
+                // socket.off("tutor_remove_user", handleTutorRemoveUser);
             };
         }
     }, [socket, queuePosition]);
@@ -76,11 +78,20 @@ const JoinTheQueue = ({ navigation }) => {
         setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
     };
 
+    // const handleTutorRemoveUser = (data) => {
+    //     console.log('tutor removed another student: ', data)
+    //     let otherPosLeft = data.position;
+
+    //     // setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
+    // };
+
     const handleUserLeft = (data) => {
         console.log(`Data for other user leaving: `, data);
         let otherPosLeft = data.position;
         console.log(`queuePos: `, queuePosition);
-        if (otherPosLeft < queuePosition) {
+        if (otherPosLeft === queuePosition) {
+            handleDoneBeingHelped();
+        } else if (otherPosLeft < queuePosition) {
             setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
         }
     };
@@ -102,10 +113,8 @@ const JoinTheQueue = ({ navigation }) => {
                         <View style={styles.queue}>
                             <Text style={styles.queueText}> You are now in line!</Text>
                             <Text style={styles.queueText}>Here is your position in the queue:</Text>
-                            <View style={styles.circle}> 
-                                <Text style={styles.circleText}>
-                                    {queuePosition === null ? "Not in line" : queuePosition} 
-                                </Text>
+                            <View style={styles.circle}>
+                                <Text style={styles.circleText}>{queuePosition === null ? "Not in line" : queuePosition}</Text>
                                 <Text style={styles.circleText2}> out of {queueSize} </Text>
                             </View>
                             <Text style={styles.queueText}>Estimated Total Wait Time:</Text>
@@ -125,13 +134,11 @@ const JoinTheQueue = ({ navigation }) => {
                         <View style={styles.queue}>
                             <Text style={styles.queueText}> Hi {user.studentId}!</Text>
                             <Text style={styles.queueText}> Here is your position in the queue:</Text>
-                            <View style={styles.circle}> 
-                                <Text style={styles.circleText2}>
-                                    {queuePosition === null ? "Not in line" : queuePosition} 
-                                </Text>
+                            <View style={styles.circle}>
+                                <Text style={styles.circleText2}>{queuePosition === null ? "Not in line" : queuePosition}</Text>
                             </View>
                             <Text style={styles.queueText}>Total in queue: {queueSize}</Text>
-                            <View style={styles.row}> 
+                            <View style={styles.row}>
                                 <View style={styles.dots}> </View>
                                 <View style={styles.dots}> </View>
                                 <View style={styles.dots}> </View>
@@ -151,7 +158,7 @@ const JoinTheQueue = ({ navigation }) => {
                         <Text style={styles.dataCollection}>In one sentence, what are you here to recieve help on?</Text>
                         <TextInput style={styles.input} onChangeText={setProblemSummary} value={problemSummary} placeholder="Enter a summary of your problem" />
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={() => joinQueue(user.studentId, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
+                    <TouchableOpacity style={styles.button} onPress={() => joinQueue(user, setQueuePosition, setHasJoined, studentClass, problemSummary)}>
                         <Text style={styles.buttonJoin}>Click to Join</Text>
                     </TouchableOpacity>
                 </View>
@@ -167,6 +174,8 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingHorizontal: 20,
         paddingVertical: 10,
+        alignItems: "center",
+        justifyContent: "center",
     },
 
     input: {
@@ -174,7 +183,8 @@ const styles = StyleSheet.create({
         borderColor: "gray",
         borderWidth: 1,
         paddingHorizontal: 10,
-        width: "100%",
+        width: "75%",
+        textAlign: "center",
     },
 
     header: {
@@ -258,7 +268,7 @@ const styles = StyleSheet.create({
     dataCollection: {
         fontSize: 20,
         fontWeight: "bold",
-        fontFamily: "Helvetica"
+        fontFamily: "Helvetica",
     },
 
     circle: {
@@ -268,23 +278,23 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFBF3F",
         justifyContent: "center",
         alignItems: "center",
-      },
+    },
 
-      circleText: {
+    circleText: {
         fontSize: 20,
         fontWeight: "bold",
         textAlign: "center",
-        color: "white"
-      },
+        color: "white",
+    },
 
-      circleText2: {
+    circleText2: {
         fontSize: 15,
         fontWeight: "bold",
         textAlign: "center",
-        color: "black"
-      },
-      
-      dots: {
+        color: "black",
+    },
+
+    dots: {
         width: 7,
         height: 7,
         borderRadius: 7 / 2,
@@ -294,7 +304,7 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         //justifyContent: "center",
         //alignItems: "center",
-      },
+    },
 
     nextPage: {
         color: "#FFFFFF",
@@ -335,7 +345,6 @@ const styles = StyleSheet.create({
     spacing2: {
         height: 10,
     },
-
 });
 
 export default JoinTheQueue;

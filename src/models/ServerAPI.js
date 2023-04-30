@@ -54,9 +54,9 @@ class ServerAPI {
         }
     }
 
-    async tutorRemoveUser(studentId) {
+    async tutorRemoveUser(user, index) {
         try {
-            let res = await this.api.post("tutor/removeUser/", studentId);
+            let res = await this.api.post("tutor/removeUser/", { user: user, index: index });
             if (res.data) {
                 console.log(res.data);
             }
@@ -71,6 +71,18 @@ class ServerAPI {
             let res = await this.api.post("tutor/alertNextPerson/");
             if (res.data) {
                 // console.log(res.data);
+            }
+            return res;
+        } catch (error) {
+            console.log(error.stack);
+        }
+    }
+
+    async tutorGetQueueData() {
+        try {
+            let res = await this.api.post("tutor/getQueue/");
+            if (res.data) {
+                console.log(res.data);
             }
             return res;
         } catch (error) {
