@@ -6,6 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const TutorView = ({ navigation }) => {
     const [zoomLink, setZoomLink] = useState("https://uno.zoom.us/j/85759495736");
+    const [calendlyLink, setCalendlyLink] = useState("https://calendly.com/login");
     const [waitTime, setWaitTime] = useState(0);
     const [queue, setQueue] = useState([]);
     const user = { studentId: "Alex T" };
@@ -47,6 +48,10 @@ const TutorView = ({ navigation }) => {
     const handleZoomLinkClick = () => {
         Linking.openURL(zoomLink);
     };
+
+    const handleCalendlyLinkClick = () => {
+        Linking.openURL(calendlyLink);
+    };
     return (
         <View style={styles.view}>
             <Text style={styles.header}>UNO CSCI JAVA HELP DESK</Text>
@@ -78,7 +83,7 @@ const TutorView = ({ navigation }) => {
                 </TouchableOpacity> */}
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate("TutorCalendar");
+                        handleCalendlyLinkClick();
                     }}
                     style={styles.buttonContainer}>
                     <Text style={styles.buttonJoin}>View Calendy Schedule</Text>
@@ -90,8 +95,8 @@ const TutorView = ({ navigation }) => {
                     <Text style={styles.buttonJoin}>Alert Next Person</Text>
                 </TouchableOpacity>
             </View>
-
             <View style={{ flex: 0.5 }}></View>
+
         </View>
     );
 };

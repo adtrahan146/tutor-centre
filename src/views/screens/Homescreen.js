@@ -28,7 +28,7 @@ const Homescreen = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Tutor")}>
-                <Text style={styles.buttonText}>Go to TutorView Temp Btn</Text>
+                <Text style={styles.buttonText}>Go to TutorView Temp </Text>
             </TouchableOpacity>
         </View>
     );
