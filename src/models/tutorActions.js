@@ -1,8 +1,8 @@
 import serverAPI from "./ServerAPI";
 
-const removeUserFromQueue = async (user) => {
+const removeUserFromQueue = async (user, index) => {
     try {
-        const res = await serverAPI.tutorRemoveUser(user);
+        const res = await serverAPI.tutorRemoveUser(user, index);
         if (res && res.data) {
             // Check if res is defined before accessing res.data
             console.log(res.data);
@@ -25,4 +25,16 @@ const alertNextPersonInQueue = async () => {
     }
 };
 
-export { removeUserFromQueue, alertNextPersonInQueue };
+const getQueue = async () => {
+    try {
+        const res = await serverAPI.tutorGetQueueData();
+        if (res && res.data) {
+            console.log(res.data);
+            return res.data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { removeUserFromQueue, alertNextPersonInQueue, getQueue };
