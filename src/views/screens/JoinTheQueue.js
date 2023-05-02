@@ -42,7 +42,7 @@ const JoinTheQueue = ({ navigation }) => {
             setIsBeingHelped(false);
         }
         console.log(`useEffect Init Function`);
-    }, [queueSize, queuePosition]);
+    }, [queueSize]);
 
     useEffect(() => {
         if (socket) {
@@ -86,12 +86,12 @@ const JoinTheQueue = ({ navigation }) => {
     // };
 
     const handleUserLeft = (data) => {
-        console.log(`Data for other user leaving: `, data);
+        console.log(`Data for other user leaving: `, data.position);
         let otherPosLeft = data.position;
         console.log(`queuePos: `, queuePosition);
-        if (otherPosLeft === queuePosition) {
+        if (otherPosLeft === queuePosition - 1) {
             handleDoneBeingHelped();
-        } else if (otherPosLeft < queuePosition) {
+        } else {
             setQueuePosition((queuePosition) => Math.max(queuePosition - 1, 0));
         }
     };

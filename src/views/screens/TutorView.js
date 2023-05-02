@@ -31,7 +31,7 @@ const TutorView = ({ navigation }) => {
             console.log("Getting current queue:", data.queue.items);
             setQueue(data.queue.items);
         }
-        console.log(`no queue data currently. ` + data);
+        // console.log(`no queue data currently. ` + data);
     };
 
     useEffect(() => {
@@ -96,7 +96,6 @@ const TutorView = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 0.5 }}></View>
-
         </View>
     );
 };

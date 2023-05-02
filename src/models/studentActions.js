@@ -15,7 +15,9 @@ const joinQueue = async (user, setQueuePosition, setHasJoined, studentClass, pro
 
 const leaveQueue = async (user, handleDoneBeingHelped) => {
     let position = user.position;
-    let res = await serverAPI.studentLeaveQueue(user.studentId, position);
+    position--;
+    console.log(`position sending: ${position}`);
+    let res = await serverAPI.studentLeaveQueue(null, position);
     console.log(res.data);
     handleDoneBeingHelped();
 };
