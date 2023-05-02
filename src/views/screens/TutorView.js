@@ -5,6 +5,7 @@ import { useSocket } from "../../context/socketContext";
 
 const TutorView = ({ navigation }) => {
     const [zoomLink, setZoomLink] = useState("https://uno.zoom.us/j/85759495736");
+    const [calendlyLink, setCalendlyLink] = useState("https://calendly.com/login");
     const [waitTime, setWaitTime] = useState(0);
     const socket = useSocket();
 
@@ -35,6 +36,10 @@ const TutorView = ({ navigation }) => {
     const handleZoomLinkClick = () => {
         Linking.openURL(zoomLink);
     };
+
+    const handleCalendlyLinkClick = () => {
+        Linking.openURL(calendlyLink);
+    };
     return (
         <View style={styles.view}>
             <Text style={styles.toptext}>UNO CSCI JAVA HELP DESK</Text>
@@ -55,10 +60,7 @@ const TutorView = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate("TutorCalendar");
-                }}>
+            <TouchableOpacity  onPress={handleCalendlyLinkClick}>
                 <Text style={styles.button}>View Calendy Schedule</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleZoomLinkClick}>
