@@ -10,7 +10,6 @@ const Homescreen = ({ navigation }) => {
             <Image style={styles.logo} source={require("../../../assets/logo.png")} />
 
             <View style={styles.spacing} />
-
             <TouchableOpacity style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>Sign In</Text>
                 {/* this button will take students to the login screen, once logged in they will be taken to what is currently
